@@ -1,14 +1,28 @@
-### Data - download the MVTec and/or VisA datasets, add the paths to the following variables in the visionad_wrapper/data/configure_dataset.py files
+# YOLOcore
+
+We combine the Patchcore and YOLO algorithms to enable bounding box predictions within anomaly detection. We argue that these predictions are more actionable than the standard heatmap predictions, and are therefore more useful to industry.
+
+### Data
+
+The MVTec dataset can be found at: https://www.mvtec.com/company/research/datasets/mvtec-ad/downloads
+
+The VisA dataset can be found at: https://github.com/amazon-science/spot-diff?tab=readme-ov-file#data-download
+
+Once downloaded and unzipped, enter the paths into the MVTEC_PATH and VISA_PATH variables in data/configure_dataset.py
 
 ### Quickstart
 
+```
 python3 create_all_files_run_yolo.py --ad_device "cuda:0" --unique_key "initial_run" --results_key "initial_results"
+```
 
 or
 
+```
 python3 create_files_run_yolo.py --dataset_key mvtec_bottle --ad_device "cuda:0" --unique_key "initial_run" --results_key "initial_results"
+```
 
-## View results here
+### View results
 
 View results by entering the relevant dataset, unique_key, and results_key into the functions in notebooks/viewing_metrics.ipynb and notebooks/viewing_results.ipynb
 
@@ -22,7 +36,9 @@ The code comes in two parts.
 
 This seperation of concerns allows us to create one set of data using a specific synthetic anomaly parameters, and experiment with many different sets YOLO training parameters. However, the code allows you to run both steps at once if you desire.
 
-# create_files_run_yolo.py
+```
+create_files_run_yolo.py
+```
 
 - **`--dataset_key`** (type: `str`, required: `True`)  
   Dataset name
@@ -51,13 +67,17 @@ This automatically creates data with normal BBs and OBBs. The normal data has th
 
 If a `results_key` is provided, the script will also train and test the YOLO detection.
 
-# create_all_files_run_yolo.py
+```
+create_all_files_run_yolo.py
+```
 
 Similar to the above script, but loops through all the dataset classes in MVTec and VisA, creating the training and testing files. As above, if results_key is provided, the script will train and test the YOLO detection.
 
 These scripts create saves the data to a folder named: {dataset_key}\_{unique_key}. This key is used by the YOLO scripts to find the relevent data.
 
-# train_yolo_model.py
+```
+train_yolo_model.py
+```
 
 - **`--dataset_key`** (type: `str`, required: `True`)  
   Dataset name
@@ -84,6 +104,8 @@ This file runs the trains and tests the YOLO network on the files corresponding 
 
 Add "\_rot" to the end of the unique_key to run the OBB YOLO.
 
-# train_all_yolo_models.py
+```
+train_all_yolo_models.py
+```
 
 This file runs the trains and tests the YOLO network on the files of all datasets that correspond to the unique_key.
